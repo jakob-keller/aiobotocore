@@ -133,6 +133,12 @@ class AioSession(_SyncSession):
             'response_parser_factory', AioResponseParserFactory()
         )
 
+    def _create_csm_monitor(self):
+        if self.get_config_variable('csm_enabled'):
+            msg = 'aiobotocore does not support SDK metrics'
+            raise NotImplementedError(msg)
+        return None
+
     def set_credentials(self, access_key, secret_key, token=None):
         self._credentials = AioCredentials(access_key, secret_key, token)
 

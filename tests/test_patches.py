@@ -465,6 +465,9 @@ _API_DIGESTS = {
     Session._register_response_parser_factory: {
         'bb8f7f3cc4d9ff9551f0875604747c4bb5030ff6'
     },
+    Session._create_csm_monitor: {
+        '1d6ecfb396ab628ab2eeb2009fc92c47c0aee1f7',
+    },
     Session.create_client: {'a821ae3870f33b65b1ea7cd347ca0497ed306ccd'},
     Session._create_token_resolver: {
         '142df7a219db0dd9c96fd81dc9e84a764a2fe5fb'
