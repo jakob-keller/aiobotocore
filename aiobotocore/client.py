@@ -558,7 +558,7 @@ class AioBaseClient(BaseClient):
 
         return endpoint_url, additional_headers, endpoint_properties
 
-    def get_paginator(self, operation_name):
+    async def get_paginator(self, operation_name):
         """Create a paginator for an operation.
 
         :type operation_name: string
@@ -567,7 +567,7 @@ class AioBaseClient(BaseClient):
             method name is ``create_foo``, and you'd normally invoke the
             operation as ``client.create_foo(**kwargs)``, if the
             ``create_foo`` operation can be paginated, you can use the
-            call ``client.get_paginator("create_foo")``.
+            call ``await client.get_paginator("create_foo")``.
 
         :raise OperationNotPageableError: Raised if the operation is not
             pageable.  You can use the ``client.can_paginate`` method to

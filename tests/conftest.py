@@ -58,7 +58,7 @@ async def assert_num_uploads_found(
     max_items=None,
     num_attempts=5,
 ):
-    paginator = s3_client.get_paginator(operation)
+    paginator = await s3_client.get_paginator(operation)
     for _ in range(num_attempts):
         pages = paginator.paginate(
             Bucket=bucket_name, PaginationConfig={'MaxItems': max_items}
@@ -352,7 +352,7 @@ async def kinesis_client(
 
 async def recursive_delete(s3_client, bucket_name):
     # Recursively deletes a bucket and all of its contents.
-    paginator = s3_client.get_paginator('list_object_versions')
+    paginator = await s3_client.get_paginator('list_object_versions')
     async for n in paginator.paginate(Bucket=bucket_name, Prefix=''):
         for obj in chain(
             n.get('Versions', []),

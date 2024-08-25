@@ -98,7 +98,7 @@ async def test_can_paginate(s3_client, bucket_name, create_object):
         key_name = f'key{i}'
         await create_object(key_name)
 
-    paginator = s3_client.get_paginator('list_objects')
+    paginator = await s3_client.get_paginator('list_objects')
     pages = paginator.paginate(MaxKeys=1, Bucket=bucket_name)
     responses = await fetch_all(pages)
 
@@ -116,7 +116,7 @@ async def test_can_paginate_with_page_size(
         key_name = f'key{i}'
         await create_object(key_name)
 
-    paginator = s3_client.get_paginator('list_objects')
+    paginator = await s3_client.get_paginator('list_objects')
     pages = paginator.paginate(
         PaginationConfig={'PageSize': 1}, Bucket=bucket_name
     )
@@ -137,7 +137,7 @@ async def test_can_search_paginate(s3_client, bucket_name, create_object):
         keys.append(key_name)
         await create_object(key_name)
 
-    paginator = s3_client.get_paginator('list_objects')
+    paginator = await s3_client.get_paginator('list_objects')
     page_iter = paginator.paginate(Bucket=bucket_name)
     async for key_name in page_iter.search('Contents[*].Key'):
         assert key_name in keys
@@ -150,7 +150,7 @@ async def test_can_paginate_iterator(s3_client, bucket_name, create_object):
         key_name = f'key{i}'
         await create_object(key_name)
 
-    paginator = s3_client.get_paginator('list_objects')
+    paginator = await s3_client.get_paginator('list_objects')
     responses = []
     async for page in paginator.paginate(
         PaginationConfig={'PageSize': 1}, Bucket=bucket_name
@@ -172,7 +172,7 @@ async def test_result_key_iters(s3_client, bucket_name, create_object):
         key_name2 = f'key/{i}'
         await create_object(key_name2)
 
-    paginator = s3_client.get_paginator('list_objects')
+    paginator = await s3_client.get_paginator('list_objects')
     generator = paginator.paginate(
         MaxKeys=2, Prefix='key/', Delimiter='/', Bucket=bucket_name
     )
@@ -317,7 +317,7 @@ async def test_paginate_max_items(
         num_uploads=1,
     )
 
-    paginator = s3_client.get_paginator('list_multipart_uploads')
+    paginator = await s3_client.get_paginator('list_multipart_uploads')
     # Works similar with build_full_result()
     pages = paginator.paginate(
         PaginationConfig={'MaxItems': 1}, Bucket=bucket_name
@@ -335,7 +335,7 @@ async def test_paginate_within_page_boundaries(
     await create_object('b')
     await create_object('c')
     await create_object('d')
-    paginator = s3_client.get_paginator('list_objects')
+    paginator = await s3_client.get_paginator('list_objects')
     # First do it without a max keys so we're operating on a single page of
     # results.
     pages = paginator.paginate(
