@@ -1,3 +1,5 @@
+import asyncio
+
 from botocore.auth import resolve_auth_type
 from botocore.awsrequest import prepare_request_dict
 from botocore.client import (
@@ -18,7 +20,7 @@ from botocore.exceptions import (
 from botocore.history import get_global_history_recorder
 from botocore.hooks import first_non_none_response
 from botocore.model import ServiceModel
-from botocore.utils import get_service_module_name
+from botocore.utils import CachedProperty, get_service_module_name
 from botocore.waiter import xform_name
 
 from . import waiter
@@ -666,6 +668,21 @@ class AioBaseClient(BaseClient):
         return waiter.create_waiter_with_client(
             mapping[waiter_name], model, self
         )
+
+    @CachedProperty
+    def waiter_names(self):
+        """Returns a list of all available waiters."""
+        return asyncio.create_task(self._waiter_names())
+
+    async def _waiter_names(self):
+        """Returns a list of all available waiters."""
+        config = self._get_waiter_config()
+        if not config:
+            return []
+        model = waiter.WaiterModel(config)
+        # Waiter configs is a dict, we just want the waiter names
+        # which are the keys in the dict.
+        return [xform_name(name) for name in model.waiter_names]
 
     async def __aenter__(self):
         await self._endpoint.http_session.__aenter__()

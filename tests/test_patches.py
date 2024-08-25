@@ -210,6 +210,7 @@ _API_DIGESTS = {
         '4a4aeabe53af25d3737204187a31f930230864b4',
         '40484242690c0679c3b13fddf0d6c9a26f7b25d2',
     },
+    # BaseClient.waiter_names: {},  CachedProperty does not have __qualname__
     BaseClient.__getattr__: {'3ec17f468f50789fa633d6041f40b66a2f593e77'},
     # config.py
     Config.merge: {'c3dd8c3ffe0da86953ceba4a35267dfb79c6a2c8'},
