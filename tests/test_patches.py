@@ -684,6 +684,9 @@ _API_DIGESTS = {
     Loader.determine_latest_version: {
         '59c29389751f35bff84491125d0dd052e7f569c8',  # matches decorator
     },
+    Loader.list_api_versions: {
+        '59c29389751f35bff84491125d0dd052e7f569c8',  # matches decorator
+    },
     Loader.load_service_model: {
         '59c29389751f35bff84491125d0dd052e7f569c8',  # matches decorator
     },
