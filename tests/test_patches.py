@@ -678,6 +678,9 @@ _API_DIGESTS = {
     Loader: {
         '1fb87735177bb91d7e2669b9c1ec2c018e123262',
     },
+    Loader.list_available_services: {
+        '59c29389751f35bff84491125d0dd052e7f569c8',  # matches decorator
+    },
     Loader.load_service_model: {
         '59c29389751f35bff84491125d0dd052e7f569c8',  # matches decorator
     },

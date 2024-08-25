@@ -142,7 +142,7 @@ class AioSession(_SyncSession):
         """
         Return a list of names of available services.
         """
-        return self.get_component('data_loader').list_available_services(
+        return await self.get_component('data_loader').list_available_services(
             type_name='service-2'
         )
 
