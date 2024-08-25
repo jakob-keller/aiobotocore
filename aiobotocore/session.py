@@ -2,7 +2,6 @@ from botocore import UNSIGNED
 from botocore import __version__ as botocore_version
 from botocore import paginate, translate, waiter
 from botocore.exceptions import PartialCredentialsError
-from botocore.loaders import create_loader
 from botocore.session import EVENT_ALIASES, ServiceModel
 from botocore.session import Session as _SyncSession
 from botocore.session import UnknownServiceError, copy
@@ -12,6 +11,7 @@ from .client import AioBaseClient, AioClientCreator
 from .configprovider import AioSmartDefaultsConfigStoreFactory
 from .credentials import AioCredentials, create_credential_resolver
 from .hooks import AioHierarchicalEmitter
+from .loaders import create_loader
 from .parsers import AioResponseParserFactory
 from .tokens import create_token_resolver
 from .utils import AioIMDSRegionProvider
