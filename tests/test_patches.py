@@ -76,7 +76,7 @@ from botocore.regions import EndpointRulesetResolver
 from botocore.response import StreamingBody, get_response
 from botocore.retries import adaptive, special, standard
 from botocore.retries.bucket import TokenBucket
-from botocore.session import Session, get_session
+from botocore.session import ComponentLocator, Session, get_session
 from botocore.signers import (
     RequestSigner,
     S3PostPresigner,
@@ -496,6 +496,9 @@ _API_DIGESTS = {
     },
     Session._register_smart_defaults_factory: {
         'af5fc9cf6837ed119284603ca1086e4113febec0'
+    },
+    ComponentLocator: {
+        '4a3453b793ca344b82a6c51db88daaee26b76ba3',
     },
     # signers.py
     RequestSigner.handler: {'371909df136a0964ef7469a63d25149176c2b442'},

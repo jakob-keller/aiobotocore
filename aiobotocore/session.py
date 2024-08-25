@@ -3,7 +3,9 @@ from botocore import __version__ as botocore_version
 from botocore import invoke_initializers, paginate, translate, waiter
 from botocore.exceptions import PartialCredentialsError
 from botocore.hooks import EventAliaser
-from botocore.session import EVENT_ALIASES, ComponentLocator, ServiceModel
+from botocore.session import EVENT_ALIASES
+from botocore.session import ComponentLocator as _SyncComponentLocator
+from botocore.session import ServiceModel
 from botocore.session import Session as _SyncSession
 from botocore.session import SessionVarDict, UnknownServiceError, copy
 
@@ -67,8 +69,8 @@ class AioSession(_SyncSession):
             self._session_instance_vars['profile'] = profile
         self._client_config = None
         self._last_client_region_used = None
-        self._components = ComponentLocator()
-        self._internal_components = ComponentLocator()
+        self._components = AioComponentLocator()
+        self._internal_components = AioComponentLocator()
         self._register_components()
         self.session_var_map = SessionVarDict(self, self.SESSION_VARIABLES)
         if session_vars is not None:
@@ -295,6 +297,10 @@ class AioSession(_SyncSession):
         except UnknownServiceError:
             pass
         return results
+
+
+class AioComponentLocator(_SyncComponentLocator):
+    pass
 
 
 def get_session(env_vars=None):
