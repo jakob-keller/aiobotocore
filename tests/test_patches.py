@@ -494,6 +494,9 @@ _API_DIGESTS = {
     Session._register_data_loader: {
         'b466359481456f8c8e5cc7b82adef604a1e44651',
     },
+    Session._register_endpoint_resolver: {
+        'acd48525c86f60e7749571262fb7f617347cc29a',
+    },
     Session._register_smart_defaults_factory: {
         'af5fc9cf6837ed119284603ca1086e4113febec0'
     },
