@@ -485,6 +485,9 @@ _API_DIGESTS = {
     Session.get_available_regions: {
         '9fb4df0b7d082a74d524a4a15aaf92a2717e0358'
     },
+    Session._register_data_loader: {
+        'b466359481456f8c8e5cc7b82adef604a1e44651',
+    },
     Session._register_smart_defaults_factory: {
         'af5fc9cf6837ed119284603ca1086e4113febec0'
     },

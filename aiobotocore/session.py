@@ -2,6 +2,7 @@ from botocore import UNSIGNED
 from botocore import __version__ as botocore_version
 from botocore import paginate, translate, waiter
 from botocore.exceptions import PartialCredentialsError
+from botocore.loaders import create_loader
 from botocore.session import EVENT_ALIASES, ServiceModel
 from botocore.session import Session as _SyncSession
 from botocore.session import UnknownServiceError, copy
@@ -61,6 +62,12 @@ class AioSession(_SyncSession):
     def _create_credential_resolver(self):
         return create_credential_resolver(
             self, region_name=self._last_client_region_used
+        )
+
+    def _register_data_loader(self):
+        self._components.lazy_register_component(
+            'data_loader',
+            lambda: create_loader(self.get_config_variable('data_path')),
         )
 
     def _register_smart_defaults_factory(self):
