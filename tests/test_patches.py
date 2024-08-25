@@ -60,7 +60,7 @@ from botocore.httpchecksum import (
     handle_checksum_body,
 )
 from botocore.httpsession import URLLib3Session
-from botocore.loaders import create_loader
+from botocore.loaders import Loader, create_loader
 from botocore.paginate import PageIterator, ResultKeyIterator
 from botocore.parsers import (
     PROTOCOL_PARSERS,
@@ -671,6 +671,9 @@ _API_DIGESTS = {
     # loaders.py
     create_loader: {
         'b38abed914b63a17b5f293391614a8f72b9d4066',
+    },
+    Loader: {
+        '1fb87735177bb91d7e2669b9c1ec2c018e123262',
     },
     # retries/adaptive.py
     # See comments in AsyncTokenBucket: we completely replace the ClientRateLimiter

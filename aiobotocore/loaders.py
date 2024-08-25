@@ -18,10 +18,23 @@ def create_loader(search_path_string=None):
 
     """
     if search_path_string is None:
-        return Loader()
+        return AioLoader()
     paths = []
     extra_paths = search_path_string.split(os.pathsep)
     for path in extra_paths:
         path = os.path.expanduser(os.path.expandvars(path))
         paths.append(path)
-    return Loader(extra_search_paths=paths)
+    return AioLoader(extra_search_paths=paths)
+
+
+class AioLoader(Loader):
+    """Find and load data models.
+
+    This class will handle searching for and loading data models.
+
+    The main method used here is ``load_service_model``, which is a
+    convenience method over ``load_data`` and ``determine_latest_version``.
+
+    """
+
+    pass
