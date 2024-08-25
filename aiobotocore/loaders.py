@@ -86,6 +86,34 @@ class AioLoader(Loader):
         return sorted(services)
 
     @instance_cache
+    def determine_latest_version(self, service_name, type_name):
+        """Find the latest API version available for a service.
+
+        :type service_name: str
+        :param service_name: The name of the service.
+
+        :type type_name: str
+        :param type_name: The type of the service (service-2,
+            paginators-1, waiters-2, etc).  This is needed because
+            the latest API version available can depend on the service
+            type.  For example, the latest API version available for
+            a resource-1.json file may not be the latest API version
+            available for a services-2.json file.
+
+        :rtype: str
+        :return: The latest API version.  If the service does not exist
+            or does not have any available API data, then a
+            ``DataNotFoundError`` exception will be raised.
+
+        """
+        return asyncio.create_task(
+            self._determine_latest_version(service_name, type_name)
+        )
+
+    async def _determine_latest_version(self, service_name, type_name):
+        return max(self.list_api_versions(service_name, type_name))
+
+    @instance_cache
     def load_service_model(self, service_name, type_name, api_version=None):
         """Load a botocore service model
 
@@ -131,7 +159,7 @@ class AioLoader(Loader):
                 known_service_names=', '.join(sorted(known_services)),
             )
         if api_version is None:
-            api_version = self.determine_latest_version(
+            api_version = await self.determine_latest_version(
                 service_name, type_name
             )
         full_path = os.path.join(service_name, api_version, type_name)
