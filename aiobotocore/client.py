@@ -10,7 +10,11 @@ from botocore.client import (
 )
 from botocore.compress import maybe_compress_request
 from botocore.discovery import block_endpoint_discovery_required_operations
-from botocore.exceptions import OperationNotPageableError, UnknownServiceError
+from botocore.exceptions import (
+    DataNotFoundError,
+    OperationNotPageableError,
+    UnknownServiceError,
+)
 from botocore.history import get_global_history_recorder
 from botocore.hooks import first_non_none_response
 from botocore.model import ServiceModel
@@ -577,7 +581,7 @@ class AioBaseClient(BaseClient):
         :return: A paginator object.
 
         """
-        if not self.can_paginate(operation_name):
+        if not await self.can_paginate(operation_name):
             raise OperationNotPageableError(operation_name=operation_name)
         else:
             actual_operation_name = self._PY_TO_OP_NAME[operation_name]
@@ -622,6 +626,20 @@ class AioBaseClient(BaseClient):
                 operation_model,
             )
             return paginator
+
+    async def can_paginate(self, operation_name):
+        if 'page_config' not in self._cache:
+            try:
+                page_config = self._loader.load_service_model(
+                    self._service_model.service_name,
+                    'paginators-1',
+                    self._service_model.api_version,
+                )['pagination']
+                self._cache['page_config'] = page_config
+            except DataNotFoundError:
+                self._cache['page_config'] = {}
+        actual_operation_name = self._PY_TO_OP_NAME[operation_name]
+        return actual_operation_name in self._cache['page_config']
 
     # NOTE: this method does not differ from botocore, however it's important to keep
     #   as the "waiter" value points to our own asyncio waiter module
