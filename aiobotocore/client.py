@@ -142,7 +142,7 @@ class AioClientCreator(ClientCreator):
         return cls
 
     async def _load_service_model(self, service_name, api_version=None):
-        json_model = self._loader.load_service_model(
+        json_model = await self._loader.load_service_model(
             service_name, 'service-2', api_version=api_version
         )
         service_model = ServiceModel(json_model, service_name=service_name)
@@ -151,7 +151,7 @@ class AioClientCreator(ClientCreator):
     async def _load_service_endpoints_ruleset(
         self, service_name, api_version=None
     ):
-        return self._loader.load_service_model(
+        return await self._loader.load_service_model(
             service_name, 'endpoint-rule-set-1', api_version=api_version
         )
 
@@ -632,10 +632,12 @@ class AioBaseClient(BaseClient):
     async def can_paginate(self, operation_name):
         if 'page_config' not in self._cache:
             try:
-                page_config = self._loader.load_service_model(
-                    self._service_model.service_name,
-                    'paginators-1',
-                    self._service_model.api_version,
+                page_config = (
+                    await self._loader.load_service_model(
+                        self._service_model.service_name,
+                        'paginators-1',
+                        self._service_model.api_version,
+                    )
                 )['pagination']
                 self._cache['page_config'] = page_config
             except DataNotFoundError:
@@ -646,7 +648,7 @@ class AioBaseClient(BaseClient):
     async def _get_waiter_config(self):
         if 'waiter_config' not in self._cache:
             try:
-                waiter_config = self._loader.load_service_model(
+                waiter_config = await self._loader.load_service_model(
                     self._service_model.service_name,
                     'waiters-2',
                     self._service_model.api_version,

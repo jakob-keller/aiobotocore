@@ -107,14 +107,14 @@ class AioSession(_SyncSession):
 
     async def get_waiter_model(self, service_name, api_version=None):
         loader = self.get_component('data_loader')
-        waiter_config = loader.load_service_model(
+        waiter_config = await loader.load_service_model(
             service_name, 'waiters-2', api_version
         )
         return waiter.WaiterModel(waiter_config)
 
     async def get_paginator_model(self, service_name, api_version=None):
         loader = self.get_component('data_loader')
-        paginator_config = loader.load_service_model(
+        paginator_config = await loader.load_service_model(
             service_name, 'paginators-1', api_version
         )
         return paginate.PaginatorModel(paginator_config)
@@ -124,7 +124,9 @@ class AioSession(_SyncSession):
         Retrieve the fully merged data associated with a service.
         """
         data_path = service_name
-        service_data = self.get_component('data_loader').load_service_model(
+        service_data = await self.get_component(
+            'data_loader'
+        ).load_service_model(
             data_path, type_name='service-2', api_version=api_version
         )
         service_id = EVENT_ALIASES.get(service_name, service_name)
