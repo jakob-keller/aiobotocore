@@ -643,6 +643,19 @@ class AioBaseClient(BaseClient):
         actual_operation_name = self._PY_TO_OP_NAME[operation_name]
         return actual_operation_name in self._cache['page_config']
 
+    async def _get_waiter_config(self):
+        if 'waiter_config' not in self._cache:
+            try:
+                waiter_config = self._loader.load_service_model(
+                    self._service_model.service_name,
+                    'waiters-2',
+                    self._service_model.api_version,
+                )
+                self._cache['waiter_config'] = waiter_config
+            except DataNotFoundError:
+                self._cache['waiter_config'] = {}
+        return self._cache['waiter_config']
+
     # NOTE: this method does not differ from botocore, however it's important to keep
     #   as the "waiter" value points to our own asyncio waiter module
     async def get_waiter(self, waiter_name):
@@ -655,7 +668,7 @@ class AioBaseClient(BaseClient):
         :returns: The specified waiter object.
         :rtype: ``botocore.waiter.Waiter``
         """
-        config = self._get_waiter_config()
+        config = await self._get_waiter_config()
         if not config:
             raise ValueError(f"Waiter does not exist: {waiter_name}")
         model = waiter.WaiterModel(config)
@@ -676,7 +689,7 @@ class AioBaseClient(BaseClient):
 
     async def _waiter_names(self):
         """Returns a list of all available waiters."""
-        config = self._get_waiter_config()
+        config = await self._get_waiter_config()
         if not config:
             return []
         model = waiter.WaiterModel(config)

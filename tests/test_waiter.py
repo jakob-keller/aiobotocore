@@ -10,8 +10,8 @@ from aiobotocore.waiter import (
 
 
 @pytest.fixture
-def cloudformation_waiter_model(cloudformation_client):
-    config = cloudformation_client._get_waiter_config()
+async def cloudformation_waiter_model(cloudformation_client):
+    config = await cloudformation_client._get_waiter_config()
     return WaiterModel(config)
 
 

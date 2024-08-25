@@ -206,6 +206,9 @@ _API_DIGESTS = {
     BaseClient.can_paginate: {
         '899e1ac809698e2d3181504e57faff4898c87ad6',
     },
+    BaseClient._get_waiter_config: {
+        '5f38e9ceba6c3f8d88dd0ecc895bc56992b38eb3',
+    },
     BaseClient.get_waiter: {
         '4a4aeabe53af25d3737204187a31f930230864b4',
         '40484242690c0679c3b13fddf0d6c9a26f7b25d2',
