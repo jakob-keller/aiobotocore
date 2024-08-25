@@ -1,6 +1,6 @@
 from botocore import UNSIGNED
 from botocore import __version__ as botocore_version
-from botocore import translate
+from botocore import translate, waiter
 from botocore.exceptions import PartialCredentialsError
 from botocore.session import EVENT_ALIASES, ServiceModel
 from botocore.session import Session as _SyncSession
@@ -97,6 +97,13 @@ class AioSession(_SyncSession):
             service_name, api_version
         )
         return ServiceModel(service_description, service_name=service_name)
+
+    async def get_waiter_model(self, service_name, api_version=None):
+        loader = self.get_component('data_loader')
+        waiter_config = loader.load_service_model(
+            service_name, 'waiters-2', api_version
+        )
+        return waiter.WaiterModel(waiter_config)
 
     async def get_service_data(self, service_name, api_version=None):
         """

@@ -476,6 +476,9 @@ _API_DIGESTS = {
         'c6b755f2eff7277ccc6023552d306ff823280404',
     },
     Session.get_service_model: {'1c8f93e6fb9913e859e43aea9bc2546edbea8365'},
+    Session.get_waiter_model: {
+        'e77326fe8aea4f62a061c02794730927b099a6c0',
+    },
     Session.get_available_regions: {
         '9fb4df0b7d082a74d524a4a15aaf92a2717e0358'
     },
