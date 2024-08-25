@@ -690,6 +690,9 @@ _API_DIGESTS = {
     Loader.load_service_model: {
         '59c29389751f35bff84491125d0dd052e7f569c8',  # matches decorator
     },
+    Loader._find_extras: {
+        'b8c0404d7912eab23e528b93de9aaf892c4370ba',
+    },
     # retries/adaptive.py
     # See comments in AsyncTokenBucket: we completely replace the ClientRateLimiter
     # implementation from botocore.

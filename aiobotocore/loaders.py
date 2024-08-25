@@ -201,7 +201,23 @@ class AioLoader(Loader):
         model = self.load_data(full_path)
 
         # Load in all the extras
-        extras_data = self._find_extras(service_name, type_name, api_version)
+        extras_data = [
+            extra
+            async for extra in self._find_extras(
+                service_name, type_name, api_version
+            )
+        ]
         self._extras_processor.process(model, extras_data)
 
         return model
+
+    async def _find_extras(self, service_name, type_name, api_version):
+        """Creates an iterator over all the extras data."""
+        for extras_type in self.extras_types:
+            extras_name = f'{type_name}.{extras_type}-extras'
+            full_path = os.path.join(service_name, api_version, extras_name)
+
+            try:
+                yield self.load_data(full_path)
+            except DataNotFoundError:
+                pass
