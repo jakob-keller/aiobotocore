@@ -109,6 +109,10 @@ class AioClientCreator(ClientCreator):
         )
         return service_client
 
+    async def create_client_class(self, service_name, api_version=None):
+        service_model = self._load_service_model(service_name, api_version)
+        return await self._create_client_class(service_name, service_model)
+
     async def _create_client_class(self, service_name, service_model):
         class_attributes = self._create_methods(service_model)
         py_name_to_operation_name = self._create_name_mapping(service_model)

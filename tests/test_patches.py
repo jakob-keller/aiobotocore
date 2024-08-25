@@ -148,6 +148,9 @@ _API_DIGESTS = {
     ClientCreator.create_client: {
         'e5bfb3213dc625a3c96e13ca7514f1ca7fc18899',
     },
+    ClientCreator.create_client_class: {
+        'd0367f8df6c9bd06169b5f06395b3890217e7fde',
+    },
     ClientCreator._create_client_class: {
         'fcecaf8d4f2c1ac3c5d0eb50c573233ef86d641d',
         '320c74206570605ff55ca32535b3f6108a7d8c1f',
