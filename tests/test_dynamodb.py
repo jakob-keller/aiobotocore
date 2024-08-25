@@ -47,7 +47,7 @@ async def test_create_waiter(dynamodb_client, dynamodb_table_def):
 
     pytest.aio.assert_status_code(response, 200)
 
-    waiter = dynamodb_client.get_waiter('table_exists')
+    waiter = await dynamodb_client.get_waiter('table_exists')
     await waiter.wait(TableName=table_name)
 
     response = await dynamodb_client.describe_table(TableName=table_name)
@@ -111,7 +111,7 @@ async def test_delete_table(dynamodb_client, dynamodb_table_def):
 @pytest.mark.parametrize('signature_version', ['v4'])
 @pytest.mark.asyncio
 async def test_waiter_table_exists_failure(dynamodb_client):
-    waiter = dynamodb_client.get_waiter('table_exists')
+    waiter = await dynamodb_client.get_waiter('table_exists')
     with pytest.raises(
         WaiterError, match='Waiter TableExists failed: Max attempts exceeded'
     ):
@@ -135,7 +135,7 @@ async def test_waiter_table_exists(
     task = event_loop.create_task(_create_table())
     assert not task.done()
 
-    waiter = dynamodb_client.get_waiter('table_exists')
+    waiter = await dynamodb_client.get_waiter('table_exists')
     await waiter.wait(
         TableName=table_name, WaiterConfig=dict(Delay=1, MaxAttempts=5)
     )

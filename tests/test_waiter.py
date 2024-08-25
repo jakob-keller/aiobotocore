@@ -51,5 +51,5 @@ async def test_sqs(cloudformation_client):
     assert resp['ResponseMetadata']['HTTPStatusCode'] == 200
 
     # wait for complete
-    waiter = cloudformation_client.get_waiter('stack_create_complete')
+    waiter = await cloudformation_client.get_waiter('stack_create_complete')
     await waiter.wait(StackName='my-stack')

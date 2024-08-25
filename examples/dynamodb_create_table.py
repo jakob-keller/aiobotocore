@@ -29,7 +29,7 @@ async def go():
         )
 
         print("Waiting for table to be created...")
-        waiter = client.get_waiter('table_exists')
+        waiter = await client.get_waiter('table_exists')
         await waiter.wait(TableName=table_name)
         print(f"Table {table_name} created")
 

@@ -643,7 +643,7 @@ class AioBaseClient(BaseClient):
 
     # NOTE: this method does not differ from botocore, however it's important to keep
     #   as the "waiter" value points to our own asyncio waiter module
-    def get_waiter(self, waiter_name):
+    async def get_waiter(self, waiter_name):
         """Returns an object that can wait for some condition.
 
         :type waiter_name: str
