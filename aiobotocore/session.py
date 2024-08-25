@@ -1,6 +1,6 @@
 from botocore import UNSIGNED
 from botocore import __version__ as botocore_version
-from botocore import translate, waiter
+from botocore import paginate, translate, waiter
 from botocore.exceptions import PartialCredentialsError
 from botocore.session import EVENT_ALIASES, ServiceModel
 from botocore.session import Session as _SyncSession
@@ -104,6 +104,13 @@ class AioSession(_SyncSession):
             service_name, 'waiters-2', api_version
         )
         return waiter.WaiterModel(waiter_config)
+
+    async def get_paginator_model(self, service_name, api_version=None):
+        loader = self.get_component('data_loader')
+        paginator_config = loader.load_service_model(
+            service_name, 'paginators-1', api_version
+        )
+        return paginate.PaginatorModel(paginator_config)
 
     async def get_service_data(self, service_name, api_version=None):
         """
