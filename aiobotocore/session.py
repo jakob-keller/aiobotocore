@@ -1,10 +1,11 @@
 from botocore import UNSIGNED
 from botocore import __version__ as botocore_version
-from botocore import paginate, translate, waiter
+from botocore import invoke_initializers, paginate, translate, waiter
 from botocore.exceptions import PartialCredentialsError
-from botocore.session import EVENT_ALIASES, ServiceModel
+from botocore.hooks import EventAliaser
+from botocore.session import EVENT_ALIASES, ComponentLocator, ServiceModel
 from botocore.session import Session as _SyncSession
-from botocore.session import UnknownServiceError, copy
+from botocore.session import SessionVarDict, UnknownServiceError, copy
 
 from . import __version__, retryhandler
 from .client import AioBaseClient, AioClientCreator
@@ -40,21 +41,39 @@ class AioSession(_SyncSession):
         profile=None,
     ):
         if event_hooks is None:
-            event_hooks = AioHierarchicalEmitter()
-
-        super().__init__(
-            session_vars, event_hooks, include_builtin_handlers, profile
-        )
-
-        self._set_user_agent_for_session()
-
-    def _set_user_agent_for_session(self):
+            self._original_handler = AioHierarchicalEmitter()
+        else:
+            self._original_handler = event_hooks
+        self._events = EventAliaser(self._original_handler)
+        if include_builtin_handlers:
+            self._register_builtin_handlers(self._events)
         # Mimic approach taken by AWS's aws-cli project
         # https://github.com/aws/aws-cli/blob/b862122c76a3f280ff34e93c9dcafaf964e7bf9b/awscli/clidriver.py#L84
-
         self.user_agent_name = 'aiobotocore'
         self.user_agent_version = __version__
         self.user_agent_extra = f'botocore/{botocore_version}'
+        # The _profile attribute is just used to cache the value
+        # of the current profile to avoid going through the normal
+        # config lookup process each access time.
+        self._profile = None
+        self._config = None
+        self._credentials = None
+        self._auth_token = None
+        self._profile_map = None
+        # This is a dict that stores per session specific config variable
+        # overrides via set_config_variable().
+        self._session_instance_vars = {}
+        if profile is not None:
+            self._session_instance_vars['profile'] = profile
+        self._client_config = None
+        self._last_client_region_used = None
+        self._components = ComponentLocator()
+        self._internal_components = ComponentLocator()
+        self._register_components()
+        self.session_var_map = SessionVarDict(self, self.SESSION_VARIABLES)
+        if session_vars is not None:
+            self.session_var_map.update(session_vars)
+        invoke_initializers(self)
 
     def _create_token_resolver(self):
         return create_token_resolver(self)

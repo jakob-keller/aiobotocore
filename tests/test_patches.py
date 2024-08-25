@@ -459,7 +459,9 @@ _API_DIGESTS = {
     StreamingBody: {'73cb1276dfb509331b964d3d5ed69e5efa008de5'},
     get_response: {'6515f43730b546419695c26d4bc0d198fde54b10'},
     # session.py
-    Session.__init__: {'c796153d589ea6fe46a3a1afa2c460f06a1c37a2'},
+    Session.__init__: {
+        'c796153d589ea6fe46a3a1afa2c460f06a1c37a2',
+    },
     Session._register_response_parser_factory: {
         'bb8f7f3cc4d9ff9551f0875604747c4bb5030ff6'
     },
