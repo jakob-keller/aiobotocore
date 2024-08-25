@@ -476,6 +476,9 @@ _API_DIGESTS = {
         '3879b969c0c2b1d5b454006a1025deb4322ae804',
         'c6b755f2eff7277ccc6023552d306ff823280404',
     },
+    Session.get_available_services: {
+        'deb651895bfc09df50daa5da92ed2ecc26797d45',
+    },
     Session.get_service_model: {'1c8f93e6fb9913e859e43aea9bc2546edbea8365'},
     Session.get_waiter_model: {
         'e77326fe8aea4f62a061c02794730927b099a6c0',

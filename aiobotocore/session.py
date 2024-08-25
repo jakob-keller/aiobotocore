@@ -138,6 +138,14 @@ class AioSession(_SyncSession):
         )
         return service_data
 
+    async def get_available_services(self):
+        """
+        Return a list of names of available services.
+        """
+        return self.get_component('data_loader').list_available_services(
+            type_name='service-2'
+        )
+
     def create_client(self, *args, **kwargs):
         return ClientCreatorContext(self._create_client(*args, **kwargs))
 
