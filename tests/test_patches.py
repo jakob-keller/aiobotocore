@@ -497,6 +497,9 @@ _API_DIGESTS = {
     Session._register_endpoint_resolver: {
         'acd48525c86f60e7749571262fb7f617347cc29a',
     },
+    Session._register_default_config_resolver: {
+        '6423030a0a1d31495c2bee5849715d78c5f8c09d',
+    },
     Session._register_smart_defaults_factory: {
         'af5fc9cf6837ed119284603ca1086e4113febec0'
     },

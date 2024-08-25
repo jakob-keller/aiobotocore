@@ -1,6 +1,7 @@
 from botocore import UNSIGNED
 from botocore import __version__ as botocore_version
 from botocore import invoke_initializers, paginate, translate, waiter
+from botocore.configprovider import DefaultConfigResolver
 from botocore.exceptions import PartialCredentialsError
 from botocore.hooks import EventAliaser
 from botocore.regions import EndpointResolver
@@ -101,6 +102,16 @@ class AioSession(_SyncSession):
 
         self._internal_components.lazy_register_component(
             'endpoint_resolver', create_default_resolver
+        )
+
+    def _register_default_config_resolver(self):
+        def create_default_config_resolver():
+            loader = self.get_component('data_loader')
+            defaults = loader.load_data('sdk-default-configuration')
+            return DefaultConfigResolver(defaults)
+
+        self._internal_components.lazy_register_component(
+            'default_config_resolver', create_default_config_resolver
         )
 
     def _register_smart_defaults_factory(self):
