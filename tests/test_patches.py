@@ -155,6 +155,9 @@ _API_DIGESTS = {
         'fcecaf8d4f2c1ac3c5d0eb50c573233ef86d641d',
         '320c74206570605ff55ca32535b3f6108a7d8c1f',
     },
+    ClientCreator._load_service_model: {
+        '4e2569e43d9a3dfd9964b227ef95abcd3a6f4128',
+    },
     ClientCreator._register_endpoint_discovery: {
         '483c6c8e035810d1b76110fc1956de76943c2f18'
     },
